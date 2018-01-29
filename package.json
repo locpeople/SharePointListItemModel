@@ -1,0 +1,26 @@
+{
+  "name": "sharepoint-list-item-model",
+  "version": "1.0.0",
+  "description": "Makes working with SharePoint lists and list items easy",
+  "main": "SPListItemModel.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/locpeople/SharePointListItemModel.git"
+  },
+  "keywords": [
+    "SharePoint",
+    "Lists",
+    "PnP-JS-Core",
+    "Framework",
+    "spfx"
+  ],
+  "author": "Johan Jongman - The Loc People",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/locpeople/SharePointListItemModel/issues"
+  },
+  "homepage": "https://github.com/locpeople/SharePointListItemModel#readme"
+}
