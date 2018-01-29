@@ -7,7 +7,7 @@ This is an abstract wrapper class that makes it easy to create models based on S
 Import the dependencies:
 
 ```
-import {SPListItemModel, SPList, SPField} from "sp-listitem-model"
+import {SPListItemModel, SPList, SPField} from "sp-list-item-model"
 ```
 Create a class that extends `SPListItemModel` and decorate it with `@SPList(NameList: string, SiteURL: string)`
 `SiteURL` is optional and defaults to the site that is the current execution context.
