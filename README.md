@@ -1,6 +1,6 @@
 # SharePoint List Item model
 
-This is an abstract wrapper class that makes it easy to create models based on SharePoint list items. It is made for use with the [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview) and uses the [SharePoint pnp-js](https://github.com/SharePoint/PnP-JS-Core).
+This is an abstract wrapper class that makes it easy to create models based on SharePoint list items in TypeScript. It is made for use with the [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview) and uses the [SharePoint pnp-js](https://github.com/SharePoint/PnP-JS-Core).
 
 ## How to use
 
