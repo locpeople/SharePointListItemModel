@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "SPListItemModel.js",
+  "types": "SPListItemModel.d.ts",
   "scripts": {
     "test": "npm test"
   },
