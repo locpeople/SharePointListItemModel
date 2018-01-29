@@ -12,7 +12,7 @@ import {SPListItemModel, SPList, SPField} from "sp-list-item-model"
 Create a class that extends `SPListItemModel` and decorate it with `@SPList(NameList: string, SiteURL: string)`
 `SiteURL` is optional and defaults to the site that is the current execution context.
 
-The fields with the `SPField(InternalName: string)` decorator represent fields in the list item. `InternamName` is optional and defaults to the class property name. If the [internal name](https://social.msdn.microsoft.com/Forums/office/en-US/75ca6fab-56f3-4bf4-aae0-2d29821778a2/how-to-get-internal-names-of-columns-in-sharepoint-lists?forum=sharepointdevelopmentlegacy) of the field is different from your property name, then specify it here.
+The fields with the `SPField(InternalName: string)` decorator represent fields in the list item. `InternalName` is optional and defaults to the class property name. If the [internal name](https://social.msdn.microsoft.com/Forums/office/en-US/75ca6fab-56f3-4bf4-aae0-2d29821778a2/how-to-get-internal-names-of-columns-in-sharepoint-lists?forum=sharepointdevelopmentlegacy) of the field is different from your property name, then specify it here.
 
 ```typescript
 @SPList("employees", "https://mysite.sharepoint.com")
