@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import * as pnp from "sp-pnp-js";
-import moment = require("moment");
+import * as moment from "moment";
 
 export function SPList(name: string, site?: string): ClassDecorator {
     return target => {

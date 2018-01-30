@@ -2,8 +2,8 @@
   "name": "sharepoint-list-item-model",
   "version": "1.0.2",
   "description": "Makes working with SharePoint lists and list items easy",
-  "main": "SPListItemModel.js",
-  "types": "SPListItemModel.d.ts",
+  "main": "dist/SPListItemModel.js",
+  "types": "dist/SPListItemModel.d.ts",
   "scripts": {
     "test": "npm test"
   },
@@ -33,6 +33,9 @@
     "@types/chai": "^4.1.2",
     "@types/sinon": "^4.1.3",
     "chai": "^4.1.2",
-    "sinon": "^4.2.2"
-  }
+    "sinon": "^4.2.2",
+    "ts-loader": "^3.3.1",
+    "webpack": "^3.10.0"
+  },
+  "files": ["./dist"]
 }
