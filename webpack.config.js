@@ -1,21 +1,14 @@
 const path = require('path');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 module.exports = {
-    entry: './SPListItemModel.ts',
+    entry: ['babel-polyfill', './SPListItemModel.ts'],
     module: {
         loaders: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {presets: ["es2015"]}
-            },
-            {
-                test: /\.ts?$/,
-                use: 'ts-loader',
+                test: /\.ts?$/, loaders: ["babel-loader", "ts-loader"],
                 exclude: /node_modules/
             }
-
         ]
     },
     resolve: {
@@ -23,12 +16,21 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
-    externals: {
-        "moment": "moment",
-        "reflect-metadata": "reflect-metadata",
-        "sp-pnp-js": "sp-pnp-js"
-
+        path:
+            path.resolve(__dirname, 'dist')
     }
-};
+    ,
+    externals: {
+        "moment":
+            "moment",
+        "reflect-metadata":
+            "reflect-metadata",
+        "sp-pnp-js":
+            "sp-pnp-js"
+
+    },
+    plugins: [
+        new MinifyPlugin()
+    ]
+}
+;
