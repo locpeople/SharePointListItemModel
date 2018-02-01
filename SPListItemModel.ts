@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import * as pnp from "sp-pnp-js";
+import {Web, sp} from "sp-pnp-js";
 import * as moment from "moment";
 
 export function SPList(name: string, site?: string): ClassDecorator {
@@ -23,8 +23,8 @@ function getSPFieldName(key: string, target) {
 function getSPList(target) {
     const name = Reflect.getMetadata("SPListName", target);
     const web = Reflect.hasMetadata("SPListLocation", target)
-        ? new pnp.Web(Reflect.getMetadata("SPListLocation", target))
-        : pnp.sp.web;
+        ? new Web(Reflect.getMetadata("SPListLocation", target))
+        : sp.web;
     return web.lists.getByTitle(name).items;
 }
 
