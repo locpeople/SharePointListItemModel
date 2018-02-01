@@ -1,9 +1,9 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel.js",
-  "types": "dist/SPListItemModel.d.ts",
+  "typings": "dist/SPListItemModel.d.ts",
   "scripts": {
     "test": "npm test"
   },
