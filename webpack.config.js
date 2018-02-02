@@ -20,15 +20,6 @@ module.exports = {
             path.resolve(__dirname, 'dist')
     }
     ,
-    externals: {
-        "moment":
-            "moment",
-        "reflect-metadata":
-            "reflect-metadata",
-        "sp-pnp-js":
-            "sp-pnp-js"
-
-    },
     plugins: [
         new MinifyPlugin()
     ]
