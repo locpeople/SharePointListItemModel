@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 *.js
-!webpack.config.js
+!gulpfile.js
 .idea/
 node_modules/
 dist/

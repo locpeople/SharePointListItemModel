@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 import {Web, sp} from "sp-pnp-js";
 import * as moment from "moment";
 

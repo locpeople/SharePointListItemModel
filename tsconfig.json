@@ -2,12 +2,9 @@
   "compilerOptions": {
     "target": "es6",
     "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "experimentalDecorators": true
-  },
-  "files": [
-    "SPListItemModel.ts"
-  ]
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
+  }
 }

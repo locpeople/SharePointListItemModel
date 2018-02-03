@@ -1,9 +1,9 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.8",
+  "version": "1.0.14",
   "description": "Makes working with SharePoint lists and list items easy",
-  "main": "dist/SPListItemModel.js",
-  "typings": "dist/SPListItemModel.d.ts",
+  "main": "dist/SPListItemModel",
+  "typings": "dist/SPListItemModel",
   "scripts": {
     "test": "npm test"
   },
@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/locpeople/SharePointListItemModel#readme",
   "dependencies": {
+    "@types/reflect-metadata": "^0.1.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-typescript": "^3.2.4",
     "moment": "^2.20.1",
     "reflect-metadata": "^0.1.12",
     "sp-pnp-js": "^3.0.4"
@@ -33,15 +36,13 @@
     "@types/chai": "^4.1.2",
     "@types/sinon": "^4.1.3",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
+    "gulp": "^3.9.1",
+    "gulp-typescript-babel": "^1.0.0",
     "sinon": "^4.2.2",
-    "ts-loader": "^3.3.1",
-    "typescript": "^2.7.1",
-    "webpack": "^3.10.0"
+    "typescript": "^2.7.1"
   },
   "files": [
     "dist/"
