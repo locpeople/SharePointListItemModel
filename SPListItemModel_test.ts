@@ -1,5 +1,6 @@
-import {assert} from 'chai';
-import * as moment from 'moment';
+import "mocha";
+import {assert} from "chai";
+import moment from 'moment-es6';
 import * as sinon from 'sinon';
 import {SPListItemModel, SPField, SPList} from "./SPListItemModel";
 import * as pnp from 'sp-pnp-js';
@@ -24,7 +25,7 @@ class TestModel2 extends SPListItemModel {
 }
 
 describe("Intiation and new data", () => {
-    beforeEach(() => {
+    beforeEach(function () {
         this.add = sinon.stub(pnp.Items.prototype, "add")
             .resolves({ID: 1})
         this.tm1 = new TestModel1();
@@ -33,17 +34,17 @@ describe("Intiation and new data", () => {
         this.tm1.TestField2 = "Test456";
         this.tm1.TestField3 = "Test789";
     })
-    afterEach(() => {
+    afterEach(function () {
         this.add.restore();
     })
 
 
-    it("Models initialize without errors", () => {
+    it("Models initialize without errors", function () {
         assert.ok(this.tm1, "Unable to initalize model class (1)");
         assert.ok(this.tm2, "Unable to initalize model class (2)")
     })
 
-    it("Calls pnp's add method correctly", done => {
+    it("Calls pnp's add method correctly", function (done) {
         let add = this.add;
 
 
@@ -61,10 +62,15 @@ describe("Intiation and new data", () => {
             .catch(e => done(new Error(e)))
     });
 
+    it("Correctly returns the internal field name", function () {
+        let tm = new TestModel1();
+        assert.equal(tm.getInternalName("TestField3"), "InternalNameForTestField3")
+    })
+
 });
 
 describe("Working with existing data", () => {
-    beforeEach(() => {
+    beforeEach(function () {
         this.resolveobj = {
             TestField1: "Test123",
             InternalNameForTestField3: "Test321",
@@ -77,11 +83,11 @@ describe("Working with existing data", () => {
         this.update = sinon.stub(pnp.Item.prototype, "update")
             .resolves({})
     });
-    afterEach(() => {
+    afterEach(function () {
         this.getbyid.restore();
         this.update.restore();
     });
-    it("Creates a correct new object from a SharePoint response", done => {
+    it("Creates a correct new object from a SharePoint response", function (done) {
         TestModel1.getItemById(1)
             .then((r: TestModel1) => {
                 assert.ok(r, "Model object not loaded");
@@ -95,7 +101,7 @@ describe("Working with existing data", () => {
     })
 
 
-    it("Updates correctly", done => {
+    it("Updates correctly", function (done) {
         TestModel1.getItemById(1)
             .then(obj => {
                 obj.TestField1 = "Changed";
@@ -111,7 +117,7 @@ describe("Working with existing data", () => {
     });
 
 
-    it("Refuses to update when server data has changed", done => {
+    it("Refuses to update when server data has changed", function (done) {
 
         let promise = TestModel1.getItemById(1)
             .then(obj => {
@@ -130,7 +136,7 @@ describe("Working with existing data", () => {
             )
     })
 
-    it("Forces overwrite with preventOverwrite:false", done => {
+    it("Forces overwrite with preventOverwrite:false", function (done) {
         let promise = TestModel1.getItemById(1)
             .then(obj => {
                     obj.TestField1 = "Changed";
@@ -144,7 +150,7 @@ describe("Working with existing data", () => {
         })
     })
 
-    it("Updated a listitem that hasn't been loaded", done => {
+    it("Updates a listitem that hasn't been loaded", function (done) {
         let item = new TestModel1();
         item.TestField1 = "Test123";
         item.ID = 1;
@@ -163,3 +169,51 @@ describe("Working with existing data", () => {
             })
     })
 });
+
+describe("Lists of data", () => {
+    beforeEach(function () {
+        this.resolveobj1 = {
+            TestField1: "Test123",
+            InternalNameForTestField3: "Test321",
+            TestField4: "2018-01-25T00:00:00Z",
+            ID: 1
+        };
+        this.resolveobj2 = {
+            TestField1: "Test123",
+            InternalNameForTestField3: "Test567890",
+            TestField4: "2018-01-26T00:00:00Z",
+            ID: 2
+        };
+        this.filter = sinon.stub(pnp.ODataQueryable.prototype, "get")
+            .resolves({value: [this.resolveobj1, this.resolveobj2]});
+    });
+    afterEach(function () {
+        this.filter.restore();
+    });
+    it("Correctly requests and parses all records in the list", function (done) {
+        TestModel1.getAllItems()
+            .then(r => {
+                assert.ok(r, "No sane response")
+                assert(r.length == 2, "Returned array has the wrong length")
+                assert(r[0].TestField3 == "Test321", "First item in the array is not correct");
+                assert(r[1].TestField3 == "Test567890", "Second item in the array is not correct");
+                done();
+            })
+            .catch(e => {
+                done(new Error(e));
+            })
+    })
+    it("Correctly requests and parses data with a filter", function (done) {
+        TestModel1.getItemsByFilter("Testfield1 eq Test123")
+            .then(r => {
+                assert.ok(r, "No sane response")
+                assert(r.length == 2, "Returned array has the wrong length")
+                assert(r[0].TestField3 == "Test321", "First item in the array is not correct");
+                assert(r[1].TestField3 == "Test567890", "Second item in the array is not correct");
+                done();
+            })
+            .catch(e => {
+                done(new Error(e));
+            })
+    })
+})

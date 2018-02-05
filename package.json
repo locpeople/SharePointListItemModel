@@ -1,6 +1,6 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel",
   "typings": "dist/SPListItemModel",
@@ -26,23 +26,28 @@
   "homepage": "https://github.com/locpeople/SharePointListItemModel#readme",
   "dependencies": {
     "@types/reflect-metadata": "^0.1.0",
-    "gulp-babel": "^7.0.1",
-    "gulp-typescript": "^3.2.4",
-    "moment": "^2.20.1",
+    "moment-es6": "^1.0.0",
     "reflect-metadata": "^0.1.12",
     "sp-pnp-js": "^3.0.4"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
+    "@types/mocha": "^2.2.48",
     "@types/sinon": "^4.1.3",
     "babel-core": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
     "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript-babel": "^1.0.0",
+    "mocha": "^5.0.0",
+    "node-fetch": "^2.0.0",
     "sinon": "^4.2.2",
-    "typescript": "^2.7.1"
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-typescript": "^3.2.4"
   },
   "files": [
     "dist/"

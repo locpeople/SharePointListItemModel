@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Web, sp} from "sp-pnp-js";
-import * as moment from "moment";
+import moment from "moment-es6";
 
 export function SPList(name: string, site?: string): ClassDecorator {
     return target => {
@@ -53,6 +53,33 @@ export abstract class SPListItemModel {
             })
     }
 
+    static getItemsByFilter<T extends SPListItemModel>(this: {new (): T}, query: string): Promise<T[]>{
+        return getSPList(this).filter(query).get()
+            .then(listdata=>{
+                let output = [];
+                listdata.value.map(item=>{
+                    let thisitem = new this();
+                    thisitem.rawData=item;
+                    thisitem.thisType = this;
+                    output.push(thisitem)
+                })
+                return output;
+            })
+    }
+
+    static getAllItems<T extends SPListItemModel>(this: {new (): T}): Promise<T[]>{
+        return getSPList(this).get()
+            .then(listdata=>{
+                let output = [];
+                listdata.value.map(item=>{
+                    let thisitem = new this();
+                    thisitem.rawData=item;
+                    thisitem.thisType = this;
+                    output.push(thisitem)
+                })
+                return output;
+            })
+    }
     set thisType(type) {
         this._type = type;
     }
@@ -92,6 +119,10 @@ export abstract class SPListItemModel {
                 }
                 return output;
             })
+    }
+
+    getInternalName(ExternalFieldName: string) {
+        return getSPFieldName(`SPField_${ExternalFieldName}`, this);
     }
 
     submit(preventOverwrite = true): Promise<any> {

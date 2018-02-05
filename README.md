@@ -29,6 +29,13 @@ class Employee extends SPListItemModel {
     
     @SPField("aabbcc")
     HiredOn: Date
+    
+    //Add your own methods or properties
+    NotASharePointField: string
+    
+    SomeMethod(): void {
+        //do something
+    } 
         
 }
 ```
@@ -62,7 +69,7 @@ Employee.getItemById(123)
     .then(()=>console.log("Updated"))
 ```
 
-##### Updating an item without loading it fist
+##### Updating an item without loading it first
 ```
 let e = new Employee();
 e.ID=123;
@@ -70,3 +77,5 @@ e.Name = "Joe Bloggs";
 e.submit()
     .then(()=>console.log("Updated"));
 ```
+
+
