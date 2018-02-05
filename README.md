@@ -52,10 +52,26 @@ e.submit()
     .then(()=>console.log("Item created"))
 ```
 
-##### Retrieving information from the list
+##### Retrieving a list item by its ID
 ```
 Employee.getItemById(123)
     .then(e=>console.log(e.Name))
+```
+
+##### Retrieving all items from the list
+```
+Employee.getAllItems()
+    .then(employees=>{
+        employees.map(employee=>console.log(employee.Name))
+    })
+```
+
+##### Retrieving items from the list using an OData filter
+```
+Employee.getItemsByFilter(`${Employee.getInternalName("Salary")} Ge 5000`)
+    .then(employees=>{
+        employees.map(employee=>console.log(employee.Name))
+    })
 ```
 
 ##### Retrieving an item and updating its information

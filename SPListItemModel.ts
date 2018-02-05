@@ -53,13 +53,13 @@ export abstract class SPListItemModel {
             })
     }
 
-    static getItemsByFilter<T extends SPListItemModel>(this: {new (): T}, query: string): Promise<T[]>{
+    static getItemsByFilter<T extends SPListItemModel>(this: { new (): T }, query: string): Promise<T[]> {
         return getSPList(this).filter(query).get()
-            .then(listdata=>{
+            .then(listdata => {
                 let output = [];
-                listdata.value.map(item=>{
+                listdata.value.map(item => {
                     let thisitem = new this();
-                    thisitem.rawData=item;
+                    thisitem.rawData = item;
                     thisitem.thisType = this;
                     output.push(thisitem)
                 })
@@ -67,19 +67,20 @@ export abstract class SPListItemModel {
             })
     }
 
-    static getAllItems<T extends SPListItemModel>(this: {new (): T}): Promise<T[]>{
+    static getAllItems<T extends SPListItemModel>(this: { new (): T }): Promise<T[]> {
         return getSPList(this).get()
-            .then(listdata=>{
+            .then(listdata => {
                 let output = [];
-                listdata.value.map(item=>{
+                listdata.value.map(item => {
                     let thisitem = new this();
-                    thisitem.rawData=item;
+                    thisitem.rawData = item;
                     thisitem.thisType = this;
                     output.push(thisitem)
                 })
                 return output;
             })
     }
+
     set thisType(type) {
         this._type = type;
     }
@@ -121,8 +122,9 @@ export abstract class SPListItemModel {
             })
     }
 
-    getInternalName(ExternalFieldName: string) {
-        return getSPFieldName(`SPField_${ExternalFieldName}`, this);
+    static getInternalName<T extends SPListItemModel>(this: { new(): T }, ExternalFieldName: string) {
+        const target = new this();
+        return getSPFieldName(`SPField_${ExternalFieldName}`, target);
     }
 
     submit(preventOverwrite = true): Promise<any> {
