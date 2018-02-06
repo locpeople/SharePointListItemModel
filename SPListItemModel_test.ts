@@ -2,7 +2,7 @@ import "mocha";
 import {assert} from "chai";
 import moment from 'moment-es6';
 import * as sinon from 'sinon';
-import {SPListItemModel, SPField, SPList} from "./SPListItemModel";
+import {SPListItemModel, SPField, SPList, ISPUrl} from "./SPListItemModel";
 import * as pnp from 'sp-pnp-js';
 
 @SPList("TestList1", "http://testsite.com")
@@ -17,6 +17,9 @@ class TestModel1 extends SPListItemModel {
 
     @SPField()
     public TestField4: Date;
+
+    @SPField()
+    public TestUrl: ISPUrl
 }
 
 @SPList("TestList2")
@@ -75,6 +78,7 @@ describe("Working with existing data", () => {
             InternalNameForTestField3: "Test321",
             IrrelevantField: "Test567",
             TestField4: "2018-01-25T00:00:00Z",
+            TestUrl: {Description: "this is an urlnode", Url: "http://www.test.com"},
             ID: 1
         };
         this.getbyid = sinon.stub(pnp.ODataQueryable.prototype, "get")
@@ -94,6 +98,7 @@ describe("Working with existing data", () => {
                 assert.equal(r.TestField3, "Test321", "TestField2 not populated correctly");
                 assert.typeOf(r.TestField4, "Date", "TestField4 not correctly parsed to Date object");
                 assert(moment(r.TestField4).isSame(new Date("2018-01-25T00:00:00Z")), "TestField4 has incorrect date");
+                assert.hasAllKeys(r.TestUrl, ["Description", "Url"])
                 done();
             })
             .catch(done);

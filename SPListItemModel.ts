@@ -2,6 +2,10 @@ import "reflect-metadata";
 import {Web, sp} from "sp-pnp-js";
 import moment from "moment-es6";
 
+export interface ISPUrl {
+    Description: string
+    Url: string
+}
 export function SPList(name: string, site?: string): ClassDecorator {
     return target => {
         Reflect.defineMetadata("SPListName", name, target);
