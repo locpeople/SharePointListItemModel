@@ -57,7 +57,7 @@ export abstract class SPListItemModel {
         return getSPList(this).filter(query).get()
             .then(listdata => {
                 let output = [];
-                listdata.value.map(item => {
+                listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
                     thisitem.thisType = this;
@@ -71,7 +71,7 @@ export abstract class SPListItemModel {
         return getSPList(this).get()
             .then(listdata => {
                 let output = [];
-                listdata.value.map(item => {
+                listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
                     thisitem.thisType = this;

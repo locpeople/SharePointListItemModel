@@ -184,7 +184,7 @@ describe("Lists of data", () => {
             ID: 2
         };
         this.filter = sinon.stub(pnp.ODataQueryable.prototype, "get")
-            .resolves({value: [this.resolveobj1, this.resolveobj2]});
+            .resolves([this.resolveobj1, this.resolveobj2]);
     });
     afterEach(function () {
         this.filter.restore();
