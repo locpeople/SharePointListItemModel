@@ -109,11 +109,13 @@ describe("Working with existing data", () => {
         TestModel1.getItemById(1)
             .then(obj => {
                 obj.TestField1 = "Changed";
+                obj.TestField3 = "Also changed";
                 return obj.submit()
             })
             .then(() => {
                 assert(this.update.calledWith({
                     TestField1: "Changed",
+                    InternalNameForTestField3: "Also changed"
                 }), "Incorrect data sent to submit while updating record");
                 done();
             })

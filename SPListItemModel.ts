@@ -23,7 +23,6 @@ function getSPFieldName(key: string, target) {
     return Reflect.getMetadata(key, target);
 }
 
-
 function getSPList(target) {
     const name = Reflect.getMetadata("SPListName", target);
     const web = Reflect.hasMetadata("SPListLocation", target)
@@ -41,7 +40,7 @@ function getMapper(target): { InternalName: string, ExternalName: string }[] {
             InternalName: getSPFieldName(k, target),
             ExternalName: k.substr(8)
         })
-    })
+    });
     return output;
 }
 
@@ -113,11 +112,12 @@ export abstract class SPListItemModel {
     private _cachedObj = {};
 
     private _hasChanged(postObj): Promise<boolean> {
-        return SPListItemModel.getItemById.call(this._type, 1)
+        return SPListItemModel.getItemById.call(this._type, this.ID)
             .then(r => {
                 let output = false;
                 for (let item in postObj) {
-                    if (this._cachedObj[item] !== r[item]) {
+                    let external = this._type.getExternalName(item);
+                    if (this._cachedObj[item] !== r[external]) {
                         output = true;
                         break;
                     }
@@ -129,6 +129,13 @@ export abstract class SPListItemModel {
     static getInternalName<T extends SPListItemModel>(this: { new(): T }, ExternalFieldName: string) {
         const target = new this();
         return getSPFieldName(`SPField_${ExternalFieldName}`, target);
+    }
+
+    static getExternalName<T extends SPListItemModel>(this: { new(): T }, InternalFieldName: string) {
+        const target = new this();
+        let mapper = getMapper(target);
+        let found = mapper.find(i=>i.InternalName == InternalFieldName);
+        return found ? found.ExternalName : InternalFieldName;
     }
 
     submit(preventOverwrite = true): Promise<any> {
