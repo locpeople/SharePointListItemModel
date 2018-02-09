@@ -1,6 +1,6 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel",
   "typings": "dist/SPListItemModel",
