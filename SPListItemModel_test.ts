@@ -66,9 +66,6 @@ describe("Intiation and new data", () => {
             .catch(e => done(new Error(e)))
     });
 
-    it("Correctly returns the internal field name", function () {
-        assert.equal(TestModel1.getInternalName("TestField3"), "InternalNameForTestField3")
-    })
 
 });
 

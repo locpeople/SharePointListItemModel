@@ -1,16 +1,10 @@
 import "reflect-metadata";
 import {Web, sp} from "sp-pnp-js";
 import moment from "moment-es6";
-import InstanceOf = Chai.InstanceOf;
 
 export interface ISPUrl {
     Description: string
     Url: string
-}
-
-export interface INapper {
-    InternalName: string,
-    ExternalName: string
 }
 
 export function SPList(name: string, site?: string): ClassDecorator {
@@ -58,12 +52,12 @@ function getMapper(target): { InternalName: string, ExternalName: string }[] {
 
 export abstract class SPListItemModel {
 
+
     static getItemById<T extends SPListItemModel>(this: { new(): T }, id: number): Promise<T> {
         return getSPList(this).getById(id).get()
             .then(r => {
                 let output = new this();
                 output.rawData = r;
-                output.thisType = this;
                 return output;
             })
     }
@@ -75,7 +69,6 @@ export abstract class SPListItemModel {
                 listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
-                    thisitem.thisType = this;
                     output.push(thisitem)
                 })
                 return output;
@@ -89,18 +82,11 @@ export abstract class SPListItemModel {
                 listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
-                    thisitem.thisType = this;
                     output.push(thisitem)
                 })
                 return output;
             })
     }
-
-    set thisType(type) {
-        this._type = type;
-    }
-
-    private _type;
 
     set rawData(rawdata) {
         const mapper = getMapper(this);
@@ -124,46 +110,46 @@ export abstract class SPListItemModel {
     private _cachedObj = {};
 
     private _hasChanged(postObj): Promise<boolean> {
-        return SPListItemModel.getItemById.call(this._type, this.ID)
+        return SPListItemModel.getItemById.call(this.constructor, this.ID)
             .then(r => {
                 let output = false;
-                let mapper = this._type.getMapper(this._type);
+                let mapper = getMapper(this.constructor.prototype);
 
                 for (let item in mapper) {
                     let thisitem = mapper[item];
+                    let cacheditem = this._cachedObj[thisitem.InternalName];
+                    let newitem = r[thisitem.ExternalName];
 
-                    if (this._cachedObj[thisitem.InternalName] !== r[thisitem.ExternalName]) {
-                        let isSameDate = r[thisitem.ExternalName] instanceof Date && moment(r[thisitem.ExternalName]).isSame(this._cachedObj[thisitem.InternalName]);
-                        if (!isSameDate) {
-                            output = true;
-                            break;
+                    let same = cacheditem == newitem;
+
+                    if (!same && cacheditem instanceof Date) {
+                        same = moment(cacheditem).isSame(newitem);
+                    }
+
+                    if (!same && typeof cacheditem == "object") {
+                        same = true;
+                        for (let i in cacheditem) {
+                            if (cacheditem[i] !== newitem[i]) {
+                                same = false;
+                                break;
+                            }
                         }
                     }
+
+                    if (!same) {
+                        output = true;
+                        break;
+                    }
+
                 }
 
                 return output;
             })
     }
 
-    static getMapper<T extends SPListItemModel>(this: { new(): T }) {
-        const target = new this();
-        return getMapper(target);
-    }
-
-    static getInternalName<T extends SPListItemModel>(this: { new(): T }, ExternalFieldName: string) {
-        const target = new this();
-        return getSPFieldName(`SPField_${ExternalFieldName}`, target);
-    }
-
-    static getExternalName<T extends SPListItemModel>(this: { new(): T }, InternalFieldName: string) {
-        const target = new this();
-        let mapper = getMapper(target);
-        let found = mapper.find(i => i.InternalName == InternalFieldName);
-        return found ? found.ExternalName : InternalFieldName;
-    }
-
     submit(preventOverwrite = true): Promise<any> {
         let postobj = this._internalObj;
+        let list = getSPList(this.constructor);
         for (let i in postobj) {
             if (!postobj[i]) delete postobj[i]
             else if (postobj[i] == this._cachedObj[i]) delete postobj[i]
@@ -171,11 +157,11 @@ export abstract class SPListItemModel {
         delete postobj.ID;
 
         if (!this.ID) {
-            return getSPList(this).add(postobj)
+            return list.add(postobj)
         }
 
         if (Object.keys(this._cachedObj).length === 0) {
-            return getSPList(this).getById(this.ID).update(postobj)
+            return list.getById(this.ID).update(postobj)
         }
 
         let retprom = preventOverwrite
@@ -185,7 +171,7 @@ export abstract class SPListItemModel {
         return retprom.then(c => {
             return c
                 ? Promise.reject("Server data has changed, unable to update")
-                : getSPList(this).getById(this.ID).update(postobj)
+                : list.getById(this.ID).update(postobj)
         })
 
     }
