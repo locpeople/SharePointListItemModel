@@ -20,6 +20,7 @@ class TestModel1 extends SPListItemModel {
 
     @SPField()
     public TestUrl: ISPUrl
+
 }
 
 @SPList("TestList2")

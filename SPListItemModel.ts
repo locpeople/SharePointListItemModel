@@ -1,11 +1,18 @@
 import "reflect-metadata";
 import {Web, sp} from "sp-pnp-js";
 import moment from "moment-es6";
+import InstanceOf = Chai.InstanceOf;
 
 export interface ISPUrl {
     Description: string
     Url: string
 }
+
+export interface INapper {
+    InternalName: string,
+    ExternalName: string
+}
+
 export function SPList(name: string, site?: string): ClassDecorator {
     return target => {
         Reflect.defineMetadata("SPListName", name, target);
@@ -22,6 +29,11 @@ export function SPField(spfield?: string): PropertyDecorator {
 function getSPFieldName(key: string, target) {
     return Reflect.getMetadata(key, target);
 }
+
+function isSPField(key: string, target) {
+    return Reflect.hasMetadata(`SPField_${key}`, target);
+}
+
 
 function getSPList(target) {
     const name = Reflect.getMetadata("SPListName", target);
@@ -115,15 +127,27 @@ export abstract class SPListItemModel {
         return SPListItemModel.getItemById.call(this._type, this.ID)
             .then(r => {
                 let output = false;
-                for (let item in postObj) {
-                    let external = this._type.getExternalName(item);
-                    if (this._cachedObj[item] !== r[external]) {
-                        output = true;
-                        break;
+                let mapper = this._type.getMapper(this._type);
+
+                for (let item in mapper) {
+                    let thisitem = mapper[item];
+
+                    if (this._cachedObj[thisitem.InternalName] !== r[thisitem.ExternalName]) {
+                        let isSameDate = r[thisitem.ExternalName] instanceof Date && moment(r[thisitem.ExternalName]).isSame(this._cachedObj[thisitem.InternalName]);
+                        if (!isSameDate) {
+                            output = true;
+                            break;
+                        }
                     }
                 }
+
                 return output;
             })
+    }
+
+    static getMapper<T extends SPListItemModel>(this: { new(): T }) {
+        const target = new this();
+        return getMapper(target);
     }
 
     static getInternalName<T extends SPListItemModel>(this: { new(): T }, ExternalFieldName: string) {
@@ -134,7 +158,7 @@ export abstract class SPListItemModel {
     static getExternalName<T extends SPListItemModel>(this: { new(): T }, InternalFieldName: string) {
         const target = new this();
         let mapper = getMapper(target);
-        let found = mapper.find(i=>i.InternalName == InternalFieldName);
+        let found = mapper.find(i => i.InternalName == InternalFieldName);
         return found ? found.ExternalName : InternalFieldName;
     }
 
