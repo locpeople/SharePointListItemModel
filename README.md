@@ -1,6 +1,6 @@
 # SharePoint List Item model
 
-This is an abstract wrapper class that makes it easy to create models based on SharePoint list items in TypeScript. It is made for use with the [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview) and uses the [SharePoint pnp-js](https://github.com/SharePoint/PnP-JS-Core).
+This is an abstract class that makes it easy to create models based on SharePoint list items in TypeScript. It is made for use with the [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview) and Node.js and uses the [SharePoint pnp-js](https://github.com/SharePoint/PnP-JS-Core).
 
 ## How to use
 
@@ -94,4 +94,12 @@ e.submit()
     .then(()=>console.log("Updated"));
 ```
 
+##### Authentication
+Authentication is only necessary if you are accessing SharePoint data from Node.js, and is done by calling the Authenticate method:
+```
+import {Authenticate} from "sp-list-item-model"
 
+Authenticate({username:"john.doe@example.com", password:"secret"}, "https://example.sharepoint.com/mysite");
+```
+
+The url parameter is optional and can also be specified it in the SPList decorator for each list model.

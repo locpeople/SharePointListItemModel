@@ -1,10 +1,17 @@
 import "reflect-metadata";
-import {Web, sp} from "sp-pnp-js";
+import {Web, sp, setup} from "sp-pnp-js";
+import NodeFetchClient from "node-pnp-js";
 import moment from "moment-es6";
 
 export interface ISPUrl {
     Description: string
     Url: string
+}
+
+export function Authenticate(creds: { username: string, password: string }, siteUrl?: string) {
+    setup({
+        sp: {fetchClientFactory: () => new NodeFetchClient(creds, siteUrl ? siteUrl : undefined)}
+    })
 }
 
 export function SPList(name: string, site?: string): ClassDecorator {
@@ -87,6 +94,12 @@ export abstract class SPListItemModel {
                 return output;
             })
     }
+
+    static getInternalName<T extends SPListItemModel>(this: { new(): T }, ExternalFieldName: string) {
+        const target = new this();
+        return getSPFieldName(`SPField_${ExternalFieldName}`, target);
+    }
+
 
     set rawData(rawdata) {
         const mapper = getMapper(this);
