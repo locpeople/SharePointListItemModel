@@ -94,12 +94,36 @@ e.submit()
     .then(()=>console.log("Updated"));
 ```
 
+##### Deleting an item
+```
+Employee.deleteItemById(123)
+    .then(()=>{
+        //do something
+    })
+```
+
+
 ##### Authentication
-Authentication is only necessary if you are accessing SharePoint data from Node.js, and is done by calling the Authenticate method:
-```
-import {Authenticate} from "sp-list-item-model"
+Authentication is only necessary if you are accessing SharePoint data from Node.js, and is done as follows:
 
-Authenticate({username:"john.doe@example.com", password:"secret"}, "https://example.sharepoint.com/mysite");
+Install ```node-pnp-js``` first:
+```
+npm i -s node-pnp-js
 ```
 
-The url parameter is optional and can also be specified it in the SPList decorator for each list model.
+```
+import {setup} from "sp-pnp-js";
+import NodeFetchClient from "node-pnp-js";
+
+const creds = {
+    username: "johndoe@example.com",
+    password: "S3cret"
+};
+
+const siteUrl = "https://example.sharepoint.com";
+    
+setup({
+        sp: {fetchClientFactory: () => new NodeFetchClient(creds, siteUrl)}
+});
+
+```

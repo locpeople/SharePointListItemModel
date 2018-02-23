@@ -4,6 +4,7 @@ import moment from 'moment-es6';
 import * as sinon from 'sinon';
 import {SPListItemModel, SPField, SPList, ISPUrl} from "./SPListItemModel";
 import * as pnp from 'sp-pnp-js';
+import {SharePointQueryableShareableItem} from "sp-pnp-js/lib/sharepoint/sharepointqueryableshareable";
 
 @SPList("TestList1", "http://testsite.com")
 class TestModel1 extends SPListItemModel {
@@ -178,6 +179,22 @@ describe("Working with existing data", () => {
     })
 });
 
+describe("Deleting data", () => {
+    beforeEach(function () {
+        //SharePointQueryableShareableItem
+        this.delete = sinon.stub(pnp.Item.prototype, "delete")
+            .resolves()
+    });
+    it("Correctly deletes by id", function (done) {
+        TestModel1.deleteItemById(1)
+            .then(() => {
+                assert(this.delete.calledOnce, "Delete method not called correctly");
+                done();
+            })
+            .catch(e => done(new Error(e)))
+    })
+});
+
 describe("Lists of data", () => {
     beforeEach(function () {
         this.resolveobj1 = {
@@ -224,4 +241,4 @@ describe("Lists of data", () => {
                 done(new Error(e));
             })
     })
-})
+});

@@ -1,6 +1,5 @@
 import "reflect-metadata";
-import {Web, sp, setup} from "sp-pnp-js";
-import NodeFetchClient from "node-pnp-js";
+import {Web, sp} from "sp-pnp-js";
 import moment from "moment-es6";
 
 export interface ISPUrl {
@@ -8,11 +7,6 @@ export interface ISPUrl {
     Url: string
 }
 
-export function Authenticate(creds: { username: string, password: string }, siteUrl?: string) {
-    setup({
-        sp: {fetchClientFactory: () => new NodeFetchClient(creds, siteUrl ? siteUrl : undefined)}
-    })
-}
 
 export function SPList(name: string, site?: string): ClassDecorator {
     return target => {
@@ -69,6 +63,7 @@ export abstract class SPListItemModel {
             })
     }
 
+
     static getItemsByFilter<T extends SPListItemModel>(this: { new (): T }, query: string): Promise<T[]> {
         return getSPList(this).filter(query).get()
             .then(listdata => {
@@ -81,6 +76,13 @@ export abstract class SPListItemModel {
                 return output;
             })
     }
+
+
+
+    static deleteItemById<T extends SPListItemModel>(this: { new(): T }, id: number): Promise<void> {
+        return getSPList(this).getById(id).delete()
+    }
+
 
     static getAllItems<T extends SPListItemModel>(this: { new (): T }): Promise<T[]> {
         return getSPList(this).get()
