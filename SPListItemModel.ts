@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Web, sp} from "sp-pnp-js";
+import { Web, sp } from "sp-pnp-js";
 import moment from "moment-es6";
 
 export interface ISPUrl {
@@ -64,8 +64,10 @@ export abstract class SPListItemModel {
     }
 
 
-    static getItemsByFilter<T extends SPListItemModel>(this: { new (): T }, query: string): Promise<T[]> {
-        return getSPList(this).filter(query).get()
+    static getItemsByFilter<T extends SPListItemModel>(this: { new(): T }, query: string, top: number = null): Promise<T[]> {
+
+        let prom = top ? getSPList(this).filter(query).top(top).get() : getSPList(this).filter(query).get();
+        return prom
             .then(listdata => {
                 let output = [];
                 listdata.map(item => {
@@ -84,7 +86,7 @@ export abstract class SPListItemModel {
     }
 
 
-    static getAllItems<T extends SPListItemModel>(this: { new (): T }): Promise<T[]> {
+    static getAllItems<T extends SPListItemModel>(this: { new(): T }): Promise<T[]> {
         return getSPList(this).get()
             .then(listdata => {
                 let output = [];
