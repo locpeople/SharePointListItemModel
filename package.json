@@ -1,6 +1,6 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel",
   "typings": "dist/SPListItemModel",
@@ -25,10 +25,13 @@
   },
   "homepage": "https://github.com/locpeople/SharePointListItemModel#readme",
   "dependencies": {
+    "@pnp/common": "^1.0.4",
+    "@pnp/logging": "^1.0.4",
+    "@pnp/odata": "^1.0.4",
+    "@pnp/sp": "^1.0.4",
     "@types/reflect-metadata": "^0.1.0",
     "moment-es6": "^1.0.0",
-    "reflect-metadata": "^0.1.12",
-    "sp-pnp-js": "^3.0.4"
+    "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
