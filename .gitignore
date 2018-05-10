@@ -4,5 +4,4 @@
 .idea/
 node_modules/
 dist/
-test/
 tmp/
