@@ -1,11 +1,11 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel",
   "typings": "dist/SPListItemModel",
   "scripts": {
-    "test": "npm test"
+    "test": "./node_modules/.bin/mocha --compilers ts:ts-node/register ./test/*.ts"
   },
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript": "^3.2.4",
     "gulp-typescript-babel": "^1.0.0",
-    "mocha": "^5.0.0",
+    "mocha": "^5.2.0",
     "node-fetch": "^2.0.0",
     "sinon": "^4.2.2",
     "ts-node": "^4.1.0",

@@ -68,13 +68,11 @@ export abstract class SPListItemModel {
 
         return getSPList(this).filter(query).getAll()
             .then(listdata => {
-                let output = [];
-                listdata.map(item => {
+                return listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
-                    output.push(thisitem)
+                    return thisitem;
                 })
-                return output;
             })
     }
 
@@ -88,13 +86,11 @@ export abstract class SPListItemModel {
     static getAllItems<T extends SPListItemModel>(this: { new(): T }): Promise<T[]> {
         return getSPList(this).getAll()
             .then(listdata => {
-                let output = [];
-                listdata.map(item => {
+                return listdata.map(item => {
                     let thisitem = new this();
                     thisitem.rawData = item;
-                    output.push(thisitem)
+                    return thisitem;
                 })
-                return output;
             })
     }
 
@@ -167,7 +163,7 @@ export abstract class SPListItemModel {
         let postobj = this._internalObj;
         let list = getSPList(this.constructor);
         for (let i in postobj) {
-            if (!postobj[i]) delete postobj[i]
+            if (postobj[i] == undefined) delete postobj[i]
             else if (postobj[i] == this._cachedObj[i]) delete postobj[i]
         }
         delete postobj.ID;
