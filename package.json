@@ -25,10 +25,10 @@
   },
   "homepage": "https://github.com/locpeople/SharePointListItemModel#readme",
   "dependencies": {
-    "@pnp/common": "^1.0.4",
-    "@pnp/logging": "^1.0.4",
-    "@pnp/odata": "^1.0.4",
-    "@pnp/sp": "^1.0.4",
+    "@pnp/common": "1.2.1",
+    "@pnp/logging": "1.2.1",
+    "@pnp/odata": "1.2.1",
+    "@pnp/sp": "1.0.4",
     "@types/reflect-metadata": "^0.1.0",
     "moment-es6": "^1.0.0",
     "reflect-metadata": "^0.1.12"
