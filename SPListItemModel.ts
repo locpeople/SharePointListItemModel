@@ -17,7 +17,7 @@ export function SPList(name: string, site?: string): ClassDecorator {
 
 export function SPField(spfield?: string): PropertyDecorator {
     return (target, key) => {
-        Reflect.defineMetadata(`SPField_${key}`, spfield ? spfield : key, target)
+        Reflect.defineMetadata(`SPField_${<string>key}`, spfield ? spfield : key, target)
     }
 }
 
