@@ -104,26 +104,4 @@ Employee.deleteItemById(123)
 
 
 ##### Authentication
-Authentication is only necessary if you are accessing SharePoint data from Node.js, and is done as follows:
-
-Install ```node-pnp-js``` first:
-```
-npm i -s node-pnp-js
-```
-
-```
-import {setup} from "sp-pnp-js";
-import NodeFetchClient from "node-pnp-js";
-
-const creds = {
-    username: "johndoe@example.com",
-    password: "S3cret"
-};
-
-const siteUrl = "https://example.sharepoint.com";
-    
-setup({
-        sp: {fetchClientFactory: () => new NodeFetchClient(creds, siteUrl)}
-});
-
-```
+If you are accessing SharePoint data from the Sharepoint Framework, then this will be done on behalf of the currently authenticated user, so authentication is not needed. If you want to access data from Node.JS you will need to authenticate. You can use [pnp-auth](https://www.npmjs.com/package/pnp-auth) for this (see the documentation for pnp-auth for instructions).
