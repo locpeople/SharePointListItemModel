@@ -62,7 +62,7 @@ Employee.getItemById(123)
 ```
 Employee.getAllItems()
     .then(employees=>{
-        employees.map(employee=>console.log(employee.Name))
+        employees.forEach(employee=>console.log(employee.Name))
     })
 ```
 
@@ -70,7 +70,7 @@ Employee.getAllItems()
 ```
 Employee.getItemsByFilter(`${Employee.getInternalName("Salary")} Ge 5000`)
     .then(employees=>{
-        employees.map(employee=>console.log(employee.Name))
+        employees.forEach(employee=>console.log(employee.Name))
     })
 ```
 
