@@ -39,16 +39,12 @@ function getSPList(target) {
 }
 
 function getMapper(target): { InternalName: string, ExternalName: string }[] {
-    let output = [];
     let keys = Reflect.getMetadataKeys(target);
     keys = keys.filter(k => k.split("_")[0] == "SPField");
-    keys.map(k => {
-        output.push({
-            InternalName: getSPFieldName(k, target),
-            ExternalName: k.substr(8)
-        })
+    return keys.map(k => {
+        InternalName: getSPFieldName(k, target),
+        ExternalName: k.substr(8)
     });
-    return output;
 }
 
 export abstract class SPListItemModel {
@@ -102,7 +98,7 @@ export abstract class SPListItemModel {
 
     set rawData(rawdata) {
         const mapper = getMapper(this);
-        mapper.map(i => {
+        mapper.forEach(i => {
             const value = Reflect.getMetadata(`SPField_${i.ExternalName}`, this);
             let dataItem = rawdata[value];
             if (moment(dataItem, moment.ISO_8601, true).isValid()) dataItem = new Date(dataItem);
@@ -114,7 +110,7 @@ export abstract class SPListItemModel {
 
     private get _internalObj(): any {
         let output: any = {};
-        getMapper(this).map(i => output[i.InternalName] = this[i.ExternalName]);
+        getMapper(this).forEach(i => output[i.InternalName] = this[i.ExternalName]);
         if (output.ID == undefined) delete output.ID;
         return output;
     }
