@@ -42,8 +42,10 @@ function getMapper(target): { InternalName: string, ExternalName: string }[] {
     let keys = Reflect.getMetadataKeys(target);
     keys = keys.filter(k => k.split("_")[0] == "SPField");
     return keys.map(k => {
-        InternalName: getSPFieldName(k, target),
-        ExternalName: k.substr(8)
+        return {
+            InternalName: getSPFieldName(k, target),
+            ExternalName: k.substr(8)
+        }
     });
 }
 
@@ -62,7 +64,7 @@ export abstract class SPListItemModel {
 
     static getItemsByFilter<T extends SPListItemModel>(this: { new(): T }, query: string, top: number = null): Promise<T[]> {
 
-        return getSPList(this).filter(query).getAll()
+        return getSPList(this).filter(query).top(top ? top : 500).get()
             .then(listdata => {
                 return listdata.map(item => {
                     let thisitem = new this();
