@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Web, sp } from "@pnp/sp";
-import * as moment from "moment";
+import moment from 'moment-es6';
 
 export interface ISPUrl {
     Description: string

@@ -1,6 +1,6 @@
 {
   "name": "sharepoint-list-item-model",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "Makes working with SharePoint lists and list items easy",
   "main": "dist/SPListItemModel",
   "typings": "dist/SPListItemModel",
@@ -29,7 +29,7 @@
     "@pnp/logging": "1.2.1",
     "@pnp/odata": "1.2.1",
     "@pnp/sp": "1.2.1",
-    "moment": "^2.27.0",
+    "moment-es6": "^1.0.0",
     "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
