@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Web, sp } from "@pnp/sp";
-import moment from "moment-es6";
+import * as moment from "moment";
 
 export interface ISPUrl {
     Description: string
@@ -103,7 +103,7 @@ export abstract class SPListItemModel {
         mapper.forEach(i => {
             const value = Reflect.getMetadata(`SPField_${i.ExternalName}`, this);
             let dataItem = rawdata[value];
-            if (moment(dataItem, moment.ISO_8601, true).isValid()) dataItem = new Date(dataItem);
+            if (parseInt(dataItem).toString() != dataItem && moment(dataItem, moment.ISO_8601, true).isValid()) dataItem = new Date(dataItem);
             this[i.ExternalName] = dataItem;
             this._cachedObj[i.InternalName] = dataItem;
         });
